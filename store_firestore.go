@@ -7,7 +7,6 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"google.golang.org/api/iterator"
-	"google.golang.org/api/option"
 )
 
 type firestoreStore struct {
