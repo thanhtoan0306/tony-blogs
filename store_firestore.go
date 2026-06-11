@@ -17,8 +17,12 @@ type firestoreStore struct {
 	bySlug     map[string]Article
 }
 
-func newFirestoreStore(ctx context.Context, credsPath, projectID, collection string) (*firestoreStore, error) {
-	client, err := firestore.NewClient(ctx, projectID, option.WithCredentialsFile(credsPath))
+func newFirestoreStore(ctx context.Context, projectID, collection string) (*firestoreStore, error) {
+	opts, err := firestoreClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := firestore.NewClient(ctx, projectID, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("firestore client: %w", err)
 	}

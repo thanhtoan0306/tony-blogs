@@ -35,7 +35,14 @@ func main() {
 	mux.HandleFunc("POST /upload", handleUploadPost(store))
 	mux.HandleFunc("GET /", handleIndex(store))
 
-	addr := "127.0.0.1:" + port
+	addr := listenAddr(port)
 	log.Printf("golang-news SSR: http://%s", addr)
 	log.Fatal(http.ListenAndServe(addr, mux))
+}
+
+func listenAddr(port string) string {
+	if os.Getenv("VERCEL") != "" {
+		return "0.0.0.0:" + port
+	}
+	return "127.0.0.1:" + port
 }

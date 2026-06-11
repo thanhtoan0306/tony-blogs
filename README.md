@@ -52,6 +52,17 @@ DATA_SOURCE=json ARTICLES_JSON=data/articles.json go run .
 | `PORT` | `8093` |
 | `DATA_SOURCE` | `firebase` (Firestore); set `json` for local files |
 | `ARTICLES_JSON` | `mockdb/articles.json` (when `DATA_SOURCE=json`) |
-| `FIREBASE_CREDENTIALS` | `golang-blogs-firebase-adminsdk-fbsvc-64dacce61f.json` |
-| `FIREBASE_PROJECT_ID` | `golang-blogs` |
+| `FIREBASE_CREDENTIALS_JSON` | *(Vercel)* full service-account JSON as one env var |
+| `FIREBASE_CREDENTIALS` | `golang-blogs-firebase-adminsdk-fbsvc-64dacce61f.json` (local file path) |
+| `FIREBASE_PROJECT_ID` | `golang-blogs` (auto-read from JSON if omitted) |
 | `FIRESTORE_COLLECTION` | `articles` |
+
+## Vercel
+
+Build succeeds but the app crashes at startup if Firebase credentials are missing. In **Project → Settings → Environment Variables**, add:
+
+| Name | Value |
+|------|-------|
+| `FIREBASE_CREDENTIALS_JSON` | Paste the entire `*firebase-adminsdk*.json` file contents |
+
+Redeploy after saving. Do not commit the JSON key to git.

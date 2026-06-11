@@ -25,19 +25,12 @@ func newArticleStore(ctx context.Context) (ArticleStore, string, error) {
 		}
 		return newMemoryStore(articles), path, nil
 	default:
-		creds := os.Getenv("FIREBASE_CREDENTIALS")
-		if creds == "" {
-			creds = "golang-blogs-firebase-adminsdk-fbsvc-64dacce61f.json"
-		}
-		projectID := os.Getenv("FIREBASE_PROJECT_ID")
-		if projectID == "" {
-			projectID = "golang-blogs"
-		}
+		projectID := firestoreProjectID()
 		collection := os.Getenv("FIRESTORE_COLLECTION")
 		if collection == "" {
 			collection = "articles"
 		}
-		store, err := newFirestoreStore(ctx, creds, projectID, collection)
+		store, err := newFirestoreStore(ctx, projectID, collection)
 		if err != nil {
 			return nil, "", err
 		}
