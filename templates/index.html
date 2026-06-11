@@ -1,0 +1,30 @@
+{{define "index.html"}}
+{{template "header" .}}
+<section class="hero">
+	<p class="badge">{{if eq .Mode "today"}}Live SSR{{else}}Latest feed{{end}}</p>
+	<h1>{{.Headline}}</h1>
+	<p class="lede muted">{{.Lede}}</p>
+</section>
+
+<section class="feed" aria-label="Crypto news feed">
+	{{if .Articles}}
+		{{range .Articles}}
+		<article class="card">
+			<div class="meta">
+				<span class="badge">{{.Category}}</span>
+				<time class="muted" datetime="{{.PublishedAt}}">{{formatPublishedAt .PublishedAt}}</time>
+			</div>
+			<h2><a href="/news/{{.Slug}}">{{.Title}}</a></h2>
+			<p class="summary">{{.Summary}}</p>
+			<div class="footer">
+				<span class="muted">By {{.Author}}</span>
+				<a class="read-more" href="/news/{{.Slug}}">Read article →</a>
+			</div>
+		</article>
+		{{end}}
+	{{else}}
+		<p class="empty muted">No stories published yet.</p>
+	{{end}}
+</section>
+{{template "footer" .}}
+{{end}}

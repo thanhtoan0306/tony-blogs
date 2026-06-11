@@ -1,0 +1,26 @@
+{{define "article.html"}}
+{{template "header" .}}
+<article class="article">
+	<p class="back"><a href="/">← All stories</a></p>
+
+	<header>
+		<div class="meta">
+			<span class="badge">{{.Article.Category}}</span>
+			<time class="muted" datetime="{{.Article.PublishedAt}}">{{formatPublishedAt .Article.PublishedAt}}</time>
+		</div>
+		<h1>{{.Article.Title}}</h1>
+		<p class="byline muted">By {{.Article.Author}}</p>
+	</header>
+
+	<p class="summary">{{.Article.Summary}}</p>
+
+	<div class="body">{{.Article.BodyContent}}</div>
+
+	<ul class="tags">
+		{{range .Article.Tags}}
+		<li>#{{.}}</li>
+		{{end}}
+	</ul>
+</article>
+{{template "footer" .}}
+{{end}}

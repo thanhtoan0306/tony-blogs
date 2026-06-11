@@ -1,0 +1,37 @@
+{
+  "articles": [
+    {
+      "id": "bitcoin-etf-inflows-record-june-2026",
+      "slug": "bitcoin-etf-inflows-record-june-2026",
+      "title": "Bitcoin Tops $110K as Spot ETF Inflows Hit a New Daily Record",
+      "summary": "U.S. spot Bitcoin ETFs absorbed over $2.1B in a single session, pushing BTC past $110,000 as institutional demand accelerates ahead of summer.",
+      "bodyHtml": "<p>Spot Bitcoin exchange-traded funds listed in the United States recorded their <strong>largest single-day net inflow</strong> since launch, with BlackRock's IBIT and Fidelity's FBTC leading the charge.</p><p>Analysts point to pension fund allocation pilots and renewed macro hedging demand as drivers. On-chain data shows exchange reserves continuing to decline while long-term holder supply rises.</p><p>Traders are watching the <em>$112K zone</em> as the next psychological barrier. Options markets now price a 38% chance of BTC closing above $115K by month-end, up from 22% last week.</p><blockquote><p>\"Flows are telling the story,\" said one desk strategist. \"Retail is participating through ETFs, but the size is unmistakably institutional.\"</p></blockquote>",
+      "category": "Bitcoin",
+      "author": "Crypto Desk",
+      "publishedAt": "2026-06-11T08:15:00Z",
+      "tags": ["bitcoin", "etf", "markets"]
+    },
+    {
+      "id": "ethereum-pectra-mainnet-live",
+      "slug": "ethereum-pectra-mainnet-live",
+      "title": "Ethereum Pectra Upgrade Goes Live, Unlocking Account Abstraction at Scale",
+      "summary": "The Pectra hard fork activated on mainnet today, bundling EIP-7702 and blob capacity tweaks that developers say will cut L2 fees and simplify wallet UX.",
+      "bodyHtml": "<p>Ethereum mainnet block <code>22,500,000</code> marked the activation of <strong>Pectra</strong>, the network's latest protocol upgrade combining Prague and Electra changes.</p><p>Validators began enforcing new rules around execution-layer triggers and increased blob throughput. Major rollups reported a <strong>12–18% reduction</strong> in data posting costs within the first hours.</p><p>Wallet vendors highlighted <a href=\"https://eips.ethereum.org/EIPS/eip-7702\">EIP-7702</a>, which lets externally owned accounts temporarily behave like smart contracts — a stepping stone toward native account abstraction without forcing users to migrate addresses.</p><ul><li>Blob throughput increased on L1</li><li>L2 posting costs fell within hours</li><li>Staking queues remain elevated as operators update clients</li></ul><p>The ETH/BTC ratio ticked up 1.4% on the news.</p>",
+      "category": "Ethereum",
+      "author": "Layer-1 Team",
+      "publishedAt": "2026-06-11T11:42:00Z",
+      "tags": ["ethereum", "pectra", "upgrade"]
+    },
+    {
+      "id": "hyperliquid-perp-volume-record-june-2026",
+      "slug": "hyperliquid-perp-volume-record-june-2026",
+      "title": "Hyperliquid Sets Weekly Perp Volume Record as HYPE Staking Tops 400M Tokens",
+      "summary": "The on-chain perpetuals exchange cleared $48B in seven-day notional volume while spot HIP-3 listings and validator staking drew fresh capital from pro desks.",
+      "bodyHtml": "<p><strong>Hyperliquid</strong> extended its lead among decentralized perpetuals venues this week, with rolling seven-day volume crossing <strong>$48 billion</strong> for the first time as BTC and ETH basis trades picked up ahead of macro data.</p><p>The chain-native order book model — sub-second finality on Hyperliquid L1, no external sequencer — continued to attract flow from systems shops that had previously routed size through centralized futures books. Open interest on BTC-USD perps rose 14% week-on-week.</p><p>On the token side, more than <code>400M HYPE</code> is now staked to validators, locking roughly 38% of circulating supply. Delegation rewards and trading-fee buybacks remain the primary demand sinks cited by holders.</p><ul><li>HIP-3 permissionless spot listings added three new pairs</li><li>Builder codes drove 22% of retail referral volume</li><li>API latency benchmarks held under 200ms p99 during the volume spike</li></ul><blockquote><p>\"Hyperliquid is where perp arb lives now,\" said a market maker who runs colocated nodes. \"CEX basis is still there, but the depth on HL is real.\"</p></blockquote><p>HYPE traded near <em>$38.20</em> at press time, up 6% on the week, while total value locked across the HyperEVM ecosystem crossed $1.2B.</p>",
+      "category": "DeFi",
+      "author": "Derivatives Desk",
+      "publishedAt": "2026-06-11T16:30:00Z",
+      "tags": ["hyperliquid", "perps", "hype", "defi"]
+    }
+  ]
+}

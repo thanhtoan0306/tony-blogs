@@ -1,0 +1,36 @@
+{{define "header"}}
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="generator" content="golang-news" />
+	<meta name="description" content="Crypto news rendered on the server with Go." />
+	<title>{{.Title}}</title>
+	<link rel="stylesheet" href="/static/global.css" />
+</head>
+<body>
+	<header class="site-header">
+		<div class="inner">
+			<a class="brand" href="/">
+				<span class="mark">₿</span>
+				<span>Crypto Today</span>
+			</a>
+			<nav class="nav">
+				<span class="muted">Go SSR</span>
+			</nav>
+		</div>
+	</header>
+	<main>
+{{end}}
+
+{{define "footer"}}
+	</main>
+	<footer class="site-footer">
+		<div class="inner muted">
+			<p>Rendered server-side with Go · mock JSON feed</p>
+		</div>
+	</footer>
+</body>
+</html>
+{{end}}

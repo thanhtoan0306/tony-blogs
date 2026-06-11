@@ -1,0 +1,4 @@
+golang-news
+*.exe
+*.test
+.env

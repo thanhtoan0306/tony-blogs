@@ -1,0 +1,26 @@
+{
+  "articles": [
+    {
+      "id": "bitcoin-etf-inflows-record-june-2026",
+      "slug": "bitcoin-etf-inflows-record-june-2026",
+      "title": "Bitcoin Tops $110K as Spot ETF Inflows Hit a New Daily Record",
+      "summary": "U.S. spot Bitcoin ETFs absorbed over $2.1B in a single session, pushing BTC past $110,000 as institutional demand accelerates ahead of summer.",
+      "body": "Spot Bitcoin exchange-traded funds listed in the United States recorded their largest single-day net inflow since launch, with BlackRock's IBIT and Fidelity's FBTC leading the charge.\n\nAnalysts point to pension fund allocation pilots and renewed macro hedging demand as drivers. On-chain data shows exchange reserves continuing to decline while long-term holder supply rises.\n\nTraders are watching the $112K zone as the next psychological barrier. Options markets now price a 38% chance of BTC closing above $115K by month-end, up from 22% last week.\n\n\"Flows are telling the story,\" said one desk strategist. \"Retail is participating through ETFs, but the size is unmistakably institutional.\"",
+      "category": "Bitcoin",
+      "author": "Crypto Desk",
+      "publishedAt": "2026-06-11T08:15:00Z",
+      "tags": ["bitcoin", "etf", "markets"]
+    },
+    {
+      "id": "ethereum-pectra-mainnet-live",
+      "slug": "ethereum-pectra-mainnet-live",
+      "title": "Ethereum Pectra Upgrade Goes Live, Unlocking Account Abstraction at Scale",
+      "summary": "The Pectra hard fork activated on mainnet today, bundling EIP-7702 and blob capacity tweaks that developers say will cut L2 fees and simplify wallet UX.",
+      "body": "Ethereum mainnet block 22,500,000 marked the activation of Pectra, the network's latest protocol upgrade combining Prague and Electra changes.\n\nValidators began enforcing new rules around execution-layer triggers and increased blob throughput. Major rollups reported a 12–18% reduction in data posting costs within the first hours.\n\nWallet vendors highlighted EIP-7702, which lets externally owned accounts temporarily behave like smart contracts — a stepping stone toward native account abstraction without forcing users to migrate addresses.\n\nThe ETH/BTC ratio ticked up 1.4% on the news. Staking queues remain elevated as operators race to update client software.",
+      "category": "Ethereum",
+      "author": "Layer-1 Team",
+      "publishedAt": "2026-06-11T11:42:00Z",
+      "tags": ["ethereum", "pectra", "upgrade"]
+    }
+  ]
+}
