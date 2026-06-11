@@ -20,8 +20,9 @@ type articleData struct {
 	Article Article
 }
 
-func handleIndex(articles []Article) http.HandlerFunc {
+func handleIndex(store ArticleStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		articles := store.All()
 		today := todayIsoDate()
 		feed := articlesForDate(articles, today)
 		mode := "today"
@@ -46,7 +47,7 @@ func handleIndex(articles []Article) http.HandlerFunc {
 	}
 }
 
-func handleArticle(articles []Article) http.HandlerFunc {
+func handleArticle(store ArticleStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		slug := strings.TrimPrefix(r.URL.Path, "/news/")
 		if slug == "" || strings.Contains(slug, "/") {
@@ -54,7 +55,7 @@ func handleArticle(articles []Article) http.HandlerFunc {
 			return
 		}
 
-		article, ok := articleBySlug(articles, slug)
+		article, ok := store.BySlug(slug)
 		if !ok {
 			w.WriteHeader(http.StatusNotFound)
 			render(w, "404.html", map[string]string{"Title": "Not found"})
@@ -69,14 +70,18 @@ func handleArticle(articles []Article) http.HandlerFunc {
 	}
 }
 
-func handleHealth(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(map[string]any{
-		"ok":        true,
-		"service":   "golang-news",
-		"mode":      "ssr",
-		"timestamp": time.Now().UTC().Format(time.RFC3339),
-	})
+func handleHealth(source string, articleCount int) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"ok":             true,
+			"service":        "golang-news",
+			"mode":           "ssr",
+			"dataSource":     source,
+			"articleCount":   articleCount,
+			"timestamp":      time.Now().UTC().Format(time.RFC3339),
+		})
+	}
 }
 
 func handleStatic(w http.ResponseWriter, r *http.Request) {

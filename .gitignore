@@ -2,3 +2,4 @@ golang-news
 *.exe
 *.test
 .env
+*firebase-adminsdk*.json

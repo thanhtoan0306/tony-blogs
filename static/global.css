@@ -279,3 +279,99 @@ main {
 	text-align: center;
 	padding: 2rem;
 }
+
+.nav a {
+	font-weight: 600;
+}
+
+.upload h1 {
+	margin: 0 0 0.5rem;
+	font-size: clamp(1.75rem, 4vw, 2.25rem);
+}
+
+.upload .back {
+	margin: 0 0 1.5rem;
+	font-size: 0.9rem;
+}
+
+.article-form {
+	display: grid;
+	gap: 1.25rem;
+	margin-top: 1.5rem;
+	padding: 1.5rem;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+}
+
+.article-form label {
+	display: grid;
+	gap: 0.4rem;
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.article-form label em {
+	color: var(--accent);
+	font-style: normal;
+}
+
+.article-form input,
+.article-form textarea {
+	width: 100%;
+	padding: 0.65rem 0.75rem;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: var(--bg);
+	color: var(--text);
+	font: inherit;
+	line-height: 1.5;
+}
+
+.article-form input:focus,
+.article-form textarea:focus {
+	outline: 2px solid color-mix(in srgb, var(--accent) 50%, transparent);
+	border-color: var(--accent);
+}
+
+.article-form textarea {
+	resize: vertical;
+	min-height: 6rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.9rem;
+}
+
+.form-row {
+	display: grid;
+	gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+	.form-row {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.btn-primary {
+	justify-self: start;
+	padding: 0.7rem 1.25rem;
+	border: none;
+	border-radius: 8px;
+	background: var(--accent);
+	color: #1a1000;
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.btn-primary:hover {
+	filter: brightness(1.08);
+}
+
+.form-error {
+	margin: 1rem 0 0;
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+	background: rgba(255, 90, 90, 0.12);
+	color: #ff8a8a;
+}

@@ -1,13 +1,14 @@
 # golang-news
 
-Server-rendered crypto news in Go. Articles are loaded from a mock JSON file and rendered as HTML on every request.
+Server-rendered crypto news in Go. Articles are loaded from **Firestore** by default and rendered as HTML on every request.
 
 ## Quick start
 
 ```bash
-cd june/golang-news
 go run .
 ```
+
+Requires `golang-blogs-firebase-adminsdk-fbsvc-64dacce61f.json` in the project root (see Firebase below).
 
 Open [http://127.0.0.1:8093](http://127.0.0.1:8093).
 
@@ -20,14 +21,28 @@ Open [http://127.0.0.1:8093](http://127.0.0.1:8093).
 | `GET /health` | JSON health check |
 | `GET /static/global.css` | Styles |
 
-## Mock data
+## Firebase (Firestore)
 
-`mockdb/articles.json` — article bodies stored as HTML (`bodyHtml` field).
+Default data source. Place the service account JSON in the project root (never commit it — already in `.gitignore`).
 
-Plain-text fallback: `data/articles.json` (`body` field, split into paragraphs).
+Seed or refresh articles from local mock data:
 
 ```bash
-ARTICLES_JSON=data/articles.json go run .
+go run ./cmd/seed-firestore
+```
+
+## Mock data (local dev)
+
+Use JSON files instead of Firestore:
+
+```bash
+DATA_SOURCE=json go run .
+```
+
+`mockdb/articles.json` — HTML bodies (`bodyHtml`). Plain-text fallback: `data/articles.json` (`body` field).
+
+```bash
+DATA_SOURCE=json ARTICLES_JSON=data/articles.json go run .
 ```
 
 ## Env
@@ -35,4 +50,8 @@ ARTICLES_JSON=data/articles.json go run .
 | Variable | Default |
 |----------|---------|
 | `PORT` | `8093` |
-| `ARTICLES_JSON` | `mockdb/articles.json` |
+| `DATA_SOURCE` | `firebase` (Firestore); set `json` for local files |
+| `ARTICLES_JSON` | `mockdb/articles.json` (when `DATA_SOURCE=json`) |
+| `FIREBASE_CREDENTIALS` | `golang-blogs-firebase-adminsdk-fbsvc-64dacce61f.json` |
+| `FIREBASE_PROJECT_ID` | `golang-blogs` |
+| `FIRESTORE_COLLECTION` | `articles` |

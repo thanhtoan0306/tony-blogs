@@ -1,0 +1,63 @@
+{{define "upload.html"}}
+{{template "header" .}}
+<section class="upload">
+	<p class="back"><a href="/">← Back to feed</a></p>
+	<h1>Upload article</h1>
+	<p class="lede muted">Publish a new story to Firestore. HTML is allowed in the body field.</p>
+
+	{{if not .CanUpload}}
+	<p class="form-error">Upload is only available when using Firestore (default). Set <code>DATA_SOURCE=firebase</code> or remove <code>DATA_SOURCE=json</code>.</p>
+	{{else}}
+	{{if .Error}}
+	<p class="form-error" role="alert">{{.Error}}</p>
+	{{end}}
+
+	<form class="article-form" method="post" action="/upload">
+		<label>
+			<span>Title <em>*</em></span>
+			<input type="text" name="title" value="{{.Form.Title}}" required maxlength="200" placeholder="Bitcoin tops $110K as ETF inflows surge" />
+		</label>
+
+		<label>
+			<span>Slug <span class="muted">(optional, auto from title)</span></span>
+			<input type="text" name="slug" value="{{.Form.Slug}}" maxlength="120" placeholder="bitcoin-tops-110k-etf-inflows" />
+		</label>
+
+		<label>
+			<span>Summary <em>*</em></span>
+			<textarea name="summary" rows="3" required maxlength="500" placeholder="One-line deck for the feed">{{.Form.Summary}}</textarea>
+		</label>
+
+		<label>
+			<span>Body HTML <em>*</em></span>
+			<textarea name="bodyHtml" rows="12" required placeholder="<p>First paragraph...</p>">{{.Form.BodyHTML}}</textarea>
+		</label>
+
+		<div class="form-row">
+			<label>
+				<span>Category</span>
+				<input type="text" name="category" value="{{.Form.Category}}" maxlength="60" placeholder="Bitcoin" />
+			</label>
+			<label>
+				<span>Author</span>
+				<input type="text" name="author" value="{{.Form.Author}}" maxlength="80" placeholder="Crypto Desk" />
+			</label>
+		</div>
+
+		<div class="form-row">
+			<label>
+				<span>Published at <span class="muted">(RFC3339, optional)</span></span>
+				<input type="text" name="publishedAt" value="{{.Form.PublishedAt}}" placeholder="2026-06-11T12:00:00Z" />
+			</label>
+			<label>
+				<span>Tags <span class="muted">(comma-separated)</span></span>
+				<input type="text" name="tags" value="{{.Form.Tags}}" placeholder="bitcoin, etf, markets" />
+			</label>
+		</div>
+
+		<button type="submit" class="btn-primary">Publish article</button>
+	</form>
+	{{end}}
+</section>
+{{template "footer" .}}
+{{end}}

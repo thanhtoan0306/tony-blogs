@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -11,16 +12,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	articlesPath := os.Getenv("ARTICLES_JSON")
-	if articlesPath == "" {
-		articlesPath = "mockdb/articles.json"
-	}
-
-	articles, err := loadArticles(articlesPath)
+	ctx := context.Background()
+	store, source, err := newArticleStore(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("loaded %d articles from %s", len(articles), articlesPath)
+	if closer, ok := store.(*firestoreStore); ok {
+		defer closer.Close()
+	}
+	log.Printf("loaded %d articles from %s", len(store.All()), source)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -29,9 +29,11 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /static/", handleStatic)
-	mux.HandleFunc("GET /health", handleHealth)
-	mux.HandleFunc("GET /news/{slug}", handleArticle(articles))
-	mux.HandleFunc("GET /", handleIndex(articles))
+	mux.HandleFunc("GET /health", handleHealth(source, len(store.All())))
+	mux.HandleFunc("GET /news/{slug}", handleArticle(store))
+	mux.HandleFunc("GET /upload", handleUploadGet(store))
+	mux.HandleFunc("POST /upload", handleUploadPost(store))
+	mux.HandleFunc("GET /", handleIndex(store))
 
 	addr := "127.0.0.1:" + port
 	log.Printf("golang-news SSR: http://%s", addr)

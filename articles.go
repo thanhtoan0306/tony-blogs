@@ -27,7 +27,7 @@ type articleStore struct {
 	Articles []Article `json:"articles"`
 }
 
-func loadArticles(path string) ([]Article, error) {
+func loadArticlesFromJSON(path string) ([]Article, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("read articles: %w", err)
