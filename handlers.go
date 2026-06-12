@@ -8,46 +8,37 @@ import (
 )
 
 type indexData struct {
-	Title    string
-	Headline string
-	Lede     string
-	Articles []Article
-	Mode     string
+	Title      string
+	Headline   string
+	Lede       string
+	Articles   []Article
+	Mode       string
+	DailyViews int64
 }
 
 type articleData struct {
-	Title   string
-	Article Article
+	Title      string
+	Article    Article
+	DailyViews int64
 }
 
-func handleIndex(store ArticleStore) http.HandlerFunc {
+func handleIndex(store ArticleStore, views ViewCounter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		articles := visibleArticles(store.All())
-		today := todayIsoDate()
-		feed := articlesForDate(articles, today)
-		mode := "today"
-		headline := "Crypto News Today"
-		lede := formatFullDate(today) + " · " + itoa(len(feed)) + " stories"
-
-		if len(feed) == 0 {
-			feed = articles
-			mode = "latest"
-			headline = "Latest Crypto News"
-			lede = "No stories for " + formatFullDate(today) + " · showing " + itoa(len(feed)) + " recent"
-		}
 
 		w.Header().Set("Cache-Control", "public, max-age=60")
 		render(w, "index.html", indexData{
-			Title:    "Tony Blogs — Top Stories",
-			Headline: headline,
-			Lede:     lede,
-			Articles: feed,
-			Mode:     mode,
+			Title:      "Tony Blogs — Top Stories",
+			Headline:   "Latest Blogs",
+			Lede:       itoa(len(articles)) + " stories",
+			Articles:   articles,
+			Mode:       "latest",
+			DailyViews: recordPageView(r.Context(), views, "home"),
 		})
 	}
 }
 
-func handleArticle(store ArticleStore) http.HandlerFunc {
+func handleArticle(store ArticleStore, views ViewCounter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		slug := strings.TrimPrefix(r.URL.Path, "/news/")
 		if slug == "" || strings.Contains(slug, "/") {
@@ -64,8 +55,9 @@ func handleArticle(store ArticleStore) http.HandlerFunc {
 
 		w.Header().Set("Cache-Control", "public, max-age=300")
 		render(w, "article.html", articleData{
-			Title:   article.Title + " · Tony Blogs",
-			Article: article,
+			Title:      article.Title + " · Tony Blogs",
+			Article:    article,
+			DailyViews: recordPageView(r.Context(), views, "news:"+slug),
 		})
 	}
 }

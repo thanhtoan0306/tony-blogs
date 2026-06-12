@@ -4,7 +4,8 @@
 	<p class="back"><a href="/">← Về trang chủ</a></p>
 	<p class="badge">Cập nhật mỗi 1 giờ</p>
 	<h1>Giá Việt Nam</h1>
-	<p class="lede muted">Vàng SJC, tỷ giá USD, xăng dầu Petrolimex và dầu thô thế giới · lần cập nhật {{formatPriceTime .Board.UpdatedAt}} · tiếp theo {{formatNextUpdate .Board.NextUpdate}}</p>
+	<p class="lede muted">Vàng SJC, Bitcoin, tỷ giá USD, xăng dầu Petrolimex và dầu thô thế giới · lần cập nhật {{formatPriceTime .Board.UpdatedAt}} · tiếp theo {{formatNextUpdate .Board.NextUpdate}}</p>
+	{{template "daily-views" .}}
 
 	{{if .Board.Errors}}
 	<div class="form-error" role="alert">
@@ -29,6 +30,30 @@
 				</div>
 			</div>
 			<p class="unit muted">{{.Board.Gold.Unit}}</p>
+		</section>
+
+		<section class="price-panel">
+			<h2>Giá Bitcoin (BTC)</h2>
+			<p class="panel-source muted">{{.Board.BTC.Source}} · {{.Board.BTC.Symbol}}</p>
+			{{if .Board.BTC.PriceUSD}}
+			<div class="price-hero">
+				<div>
+					<span class="label">Giá USD</span>
+					<strong class="value">{{formatUSD .Board.BTC.PriceUSD}}</strong>
+					<span class="change {{changeClassFloat .Board.BTC.ChangeUSD}}">{{formatUSDChange .Board.BTC.ChangeUSD}}</span>
+				</div>
+				{{if .Board.BTC.PriceVND}}
+				<div>
+					<span class="label">Quy đổi VND</span>
+					<strong class="value">{{formatVND .Board.BTC.PriceVND}}</strong>
+					<span class="change muted">theo tỷ giá USD</span>
+				</div>
+				{{end}}
+			</div>
+			<p class="unit muted">Spot · cập nhật mỗi 1 giờ</p>
+			{{else}}
+			<p class="empty muted">Chưa có dữ liệu BTC.</p>
+			{{end}}
 		</section>
 
 		<section class="price-panel">

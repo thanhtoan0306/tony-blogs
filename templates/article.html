@@ -10,6 +10,7 @@
 		</div>
 		<h1>{{.Article.Title}}</h1>
 		<p class="byline muted">By {{.Article.Author}}</p>
+		{{template "daily-views" .}}
 	</header>
 
 	<figure class="article-thumb">

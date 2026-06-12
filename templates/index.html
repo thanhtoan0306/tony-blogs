@@ -4,6 +4,7 @@
 	<p class="badge">{{if eq .Mode "today"}}Live SSR{{else}}Latest feed{{end}}</p>
 	<h1>{{.Headline}}</h1>
 	<p class="lede muted">{{.Lede}}</p>
+	{{template "daily-views" .}}
 </section>
 
 <section class="feed" aria-label="Crypto news feed">

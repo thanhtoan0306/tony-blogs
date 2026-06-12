@@ -18,20 +18,20 @@
 			</a>
 			<nav class="nav">
 				<a href="/prices">Giá VN</a>
-				<span class="muted">Go SSR</span>
 			</nav>
 		</div>
 	</header>
 	<main>
 {{end}}
 
+{{define "daily-views"}}
+{{if .DailyViews}}
+<p class="view-count muted">{{formatIntDots .DailyViews}} lượt truy cập hôm nay</p>
+{{end}}
+{{end}}
+
 {{define "footer"}}
 	</main>
-	<footer class="site-footer">
-		<div class="inner muted">
-			<p>Rendered server-side with Go · Firestore feed</p>
-		</div>
-	</footer>
 </body>
 </html>
 {{end}}

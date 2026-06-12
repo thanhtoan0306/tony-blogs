@@ -43,11 +43,22 @@ type USDQuote struct {
 	Source  string
 }
 
+type BTCQuote struct {
+	Name      string
+	Symbol    string
+	PriceUSD  float64
+	PriceVND  int64
+	ChangeUSD float64
+	Unit      string
+	Source    string
+}
+
 type VNPriceBoard struct {
 	UpdatedAt  time.Time
 	NextUpdate time.Time
 	Gold       GoldQuote
 	USD        USDQuote
+	BTC        BTCQuote
 	Gasoline   []FuelQuote
 	Oil        []OilQuote
 	Errors     []string
@@ -107,6 +118,15 @@ func (pb *priceBoard) refresh(ctx context.Context) {
 		board.Errors = append(board.Errors, "USD: "+err.Error())
 	} else {
 		board.USD = usd
+	}
+
+	if btc, err := fetchBTC(ctx); err != nil {
+		board.Errors = append(board.Errors, "BTC: "+err.Error())
+	} else {
+		if board.USD.AvgVND > 0 {
+			btc.PriceVND = int64(btc.PriceUSD*float64(board.USD.AvgVND) + 0.5)
+		}
+		board.BTC = btc
 	}
 
 	if gas, err := fetchGasVN(ctx); err != nil {

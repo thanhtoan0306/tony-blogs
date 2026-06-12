@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/subtle"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -14,8 +15,12 @@ const (
 )
 
 func uploadAuthed(r *http.Request) bool {
-	c, err := r.Cookie(uploadAuthCookie)
-	return err == nil && subtle.ConstantTimeCompare([]byte(c.Value), []byte(uploadAuthToken)) == 1
+	if c, err := r.Cookie(uploadAuthCookie); err == nil &&
+		subtle.ConstantTimeCompare([]byte(c.Value), []byte(uploadAuthToken)) == 1 {
+		return true
+	}
+	pw := strings.TrimSpace(r.Header.Get("X-Upload-Password"))
+	return pw != "" && checkUploadPassword(pw)
 }
 
 func setUploadAuth(w http.ResponseWriter) {

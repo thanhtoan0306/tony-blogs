@@ -27,6 +27,7 @@ func initTemplates() error {
 		"formatNextUpdate":  formatNextUpdate,
 		"changeClass":       changeClass,
 		"changeClassFloat":  changeClassFloat,
+		"formatIntDots":     formatIntDots,
 	}
 
 	var err error

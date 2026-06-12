@@ -159,14 +159,14 @@ func fetchOilWorld(ctx context.Context) ([]OilQuote, error) {
 	return out, nil
 }
 
-func fetchYahooOil(ctx context.Context, symbol, name string) (OilQuote, error) {
+func fetchYahooMarket(ctx context.Context, symbol string) (price, change float64, err error) {
 	url := fmt.Sprintf(
 		"https://query1.finance.yahoo.com/v8/finance/chart/%s?interval=1d&range=1d",
 		symbol,
 	)
 	body, err := httpGet(ctx, url)
 	if err != nil {
-		return OilQuote{}, fmt.Errorf("%s: %w", symbol, err)
+		return 0, 0, fmt.Errorf("%s: %w", symbol, err)
 	}
 
 	var resp struct {
@@ -180,24 +180,46 @@ func fetchYahooOil(ctx context.Context, symbol, name string) (OilQuote, error) {
 		} `json:"chart"`
 	}
 	if err := json.Unmarshal(body, &resp); err != nil {
-		return OilQuote{}, fmt.Errorf("%s parse: %w", symbol, err)
+		return 0, 0, fmt.Errorf("%s parse: %w", symbol, err)
 	}
 	if len(resp.Chart.Result) == 0 {
-		return OilQuote{}, fmt.Errorf("%s: empty chart result", symbol)
+		return 0, 0, fmt.Errorf("%s: empty chart result", symbol)
 	}
 
 	meta := resp.Chart.Result[0].Meta
 	if meta.RegularMarketPrice == 0 {
-		return OilQuote{}, fmt.Errorf("%s: missing market price", symbol)
+		return 0, 0, fmt.Errorf("%s: missing market price", symbol)
 	}
 
-	change := meta.RegularMarketPrice - meta.ChartPreviousClose
+	return meta.RegularMarketPrice, meta.RegularMarketPrice - meta.ChartPreviousClose, nil
+}
+
+func fetchYahooOil(ctx context.Context, symbol, name string) (OilQuote, error) {
+	price, change, err := fetchYahooMarket(ctx, symbol)
+	if err != nil {
+		return OilQuote{}, err
+	}
 	return OilQuote{
 		Name:      name,
 		Symbol:    symbol,
-		PriceUSD:  meta.RegularMarketPrice,
+		PriceUSD:  price,
 		ChangeUSD: change,
 		Unit:      "USD/thùng",
+		Source:    "Yahoo Finance",
+	}, nil
+}
+
+func fetchBTC(ctx context.Context) (BTCQuote, error) {
+	price, change, err := fetchYahooMarket(ctx, "BTC-USD")
+	if err != nil {
+		return BTCQuote{}, err
+	}
+	return BTCQuote{
+		Name:      "Bitcoin",
+		Symbol:    "BTC-USD",
+		PriceUSD:  price,
+		ChangeUSD: change,
+		Unit:      "USD",
 		Source:    "Yahoo Finance",
 	}, nil
 }

@@ -25,6 +25,15 @@ func main() {
 	}
 	log.Printf("loaded %d articles from %s", len(store.All()), source)
 
+	views, viewSource, err := newViewCounter(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if closer, ok := views.(*firestoreViewCounter); ok {
+		defer closer.Close()
+	}
+	log.Printf("page views: %s", viewSource)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8093"
@@ -33,15 +42,17 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /static/", handleStatic)
 	mux.HandleFunc("GET /health", handleHealth(source, len(store.All())))
-	mux.HandleFunc("GET /news/{slug}", handleArticle(store))
+	mux.HandleFunc("GET /news/{slug}", handleArticle(store, views))
 	mux.HandleFunc("GET /upload", handleUploadGet(store))
 	mux.HandleFunc("POST /upload/login", handleUploadLogin())
 	mux.HandleFunc("POST /upload", handleUploadPost(store))
 	mux.HandleFunc("GET /upload/manage", handleManageGet(store))
 	mux.HandleFunc("POST /upload/manage/visible", handleManageVisible(store))
-	mux.HandleFunc("GET /prices", handlePricesPage(prices))
+	mux.HandleFunc("GET /prices", handlePricesPage(prices, views))
 	mux.HandleFunc("GET /api/prices", handlePricesAPI(prices))
-	mux.HandleFunc("GET /", handleIndex(store))
+	mux.HandleFunc("GET /api", handleAPIDocs())
+	mux.HandleFunc("POST /api/articles", handleArticlesAPIPost(store))
+	mux.HandleFunc("GET /", handleIndex(store, views))
 
 	addr := listenAddr(port)
 	log.Printf("golang-news SSR: http://%s", addr)
