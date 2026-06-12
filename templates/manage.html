@@ -1,0 +1,85 @@
+{{define "manage.html"}}
+{{template "header" .}}
+{{if not .Authed}}
+<div class="upload-gate" role="dialog" aria-modal="true" aria-labelledby="upload-gate-title">
+	<form class="upload-gate-card" method="post" action="/upload/login">
+		<input type="hidden" name="next" value="{{.Next}}" />
+		<h2 id="upload-gate-title">Nhập mật khẩu</h2>
+		<p class="muted">Trang quản lý được bảo vệ.</p>
+		{{if .LoginError}}
+		<p class="form-error" role="alert">{{.LoginError}}</p>
+		{{end}}
+		<label>
+			<span>Mật khẩu</span>
+			<input type="password" name="password" autofocus required autocomplete="current-password" />
+		</label>
+		<button type="submit" class="btn-primary">Vào trang quản lý</button>
+	</form>
+</div>
+{{end}}
+
+<section class="upload manage{{if not .Authed}} upload-locked{{end}}">
+	{{if .Authed}}
+	<p class="back"><a href="/upload">← Upload bài mới</a> · <a href="/">Trang chính</a></p>
+	<h1>Quản lý danh sách blog</h1>
+	<p class="lede muted">Bật/tắt hiển thị từng bài trên trang chính. Link chi tiết vẫn truy cập được.</p>
+
+	{{if not .CanManage}}
+	<p class="form-error">Quản lý chỉ khả dụng khi dùng Firestore.</p>
+	{{else}}
+	{{if .Message}}
+	<p class="form-error" role="alert">{{.Message}}</p>
+	{{end}}
+
+	{{if .Articles}}
+	<div class="table-wrap">
+		<table class="price-table manage-table">
+			<thead>
+				<tr>
+					<th>Tiêu đề</th>
+					<th>Ngày đăng</th>
+					<th>Trang chính</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{{range .Articles}}
+				<tr>
+					<td>
+						<strong>{{.Title}}</strong>
+						<span class="muted manage-slug">/news/{{.Slug}}</span>
+					</td>
+					<td class="nowrap">{{formatPublishedAt .PublishedAt}}</td>
+					<td>
+						{{if .IsVisible}}
+						<span class="badge badge-on">Đang hiện</span>
+						{{else}}
+						<span class="badge badge-off">Đang ẩn</span>
+						{{end}}
+					</td>
+					<td class="manage-actions">
+						<form method="post" action="/upload/manage/visible">
+							<input type="hidden" name="slug" value="{{.Slug}}" />
+							{{if .IsVisible}}
+							<input type="hidden" name="visible" value="0" />
+							<button type="submit" class="btn-secondary">Ẩn khỏi trang chính</button>
+							{{else}}
+							<input type="hidden" name="visible" value="1" />
+							<button type="submit" class="btn-primary">Hiện trang chính</button>
+							{{end}}
+						</form>
+						<a class="read-more" href="/news/{{.Slug}}" target="_blank" rel="noopener">Xem →</a>
+					</td>
+				</tr>
+				{{end}}
+			</tbody>
+		</table>
+	</div>
+	{{else}}
+	<p class="empty muted">Chưa có bài viết nào.</p>
+	{{end}}
+	{{end}}
+	{{end}}
+</section>
+{{template "footer" .}}
+{{end}}

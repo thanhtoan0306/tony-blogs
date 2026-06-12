@@ -1,9 +1,32 @@
 {{define "upload.html"}}
 {{template "header" .}}
-<section class="upload">
+{{if not .Authed}}
+<div class="upload-gate" role="dialog" aria-modal="true" aria-labelledby="upload-gate-title">
+	<form class="upload-gate-card" method="post" action="/upload/login">
+		<h2 id="upload-gate-title">Nhập mật khẩu</h2>
+		<p class="muted">Trang upload được bảo vệ.</p>
+		{{if .LoginError}}
+		<p class="form-error" role="alert">{{.LoginError}}</p>
+		{{end}}
+		<label>
+			<span>Mật khẩu</span>
+			<input type="password" name="password" autofocus required autocomplete="current-password" />
+		</label>
+		<button type="submit" class="btn-primary">Vào trang upload</button>
+	</form>
+</div>
+{{end}}
+
+<section class="upload{{if not .Authed}} upload-locked{{end}}">
+	{{if .Authed}}
 	<p class="back"><a href="/">← Back to feed</a></p>
-	<h1>Upload article</h1>
-	<p class="lede muted">Publish a new story to Firestore. HTML is allowed in the body field.</p>
+	<div class="upload-toolbar">
+		<div>
+			<h1>Upload article</h1>
+			<p class="lede muted">Publish a new story to Firestore. HTML is allowed in the body field.</p>
+		</div>
+		<a class="btn-secondary" href="/upload/manage">Quản lý danh sách blog</a>
+	</div>
 
 	{{if not .CanUpload}}
 	<p class="form-error">Upload is only available when using Firestore (default). Set <code>DATA_SOURCE=firebase</code> or remove <code>DATA_SOURCE=json</code>.</p>
@@ -57,6 +80,7 @@
 
 		<button type="submit" class="btn-primary">Publish article</button>
 	</form>
+	{{end}}
 	{{end}}
 </section>
 {{template "footer" .}}

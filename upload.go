@@ -12,6 +12,10 @@ type ArticleWriter interface {
 	Create(ctx context.Context, a Article) error
 }
 
+type ArticleManager interface {
+	SetVisible(ctx context.Context, slug string, visible bool) error
+}
+
 type uploadForm struct {
 	Title       string
 	Slug        string
@@ -24,18 +28,22 @@ type uploadForm struct {
 }
 
 type uploadData struct {
-	Title     string
-	Error     string
-	CanUpload bool
-	Form      uploadForm
+	Title      string
+	Error      string
+	LoginError string
+	Authed     bool
+	CanUpload  bool
+	Form       uploadForm
 }
 
 func handleUploadGet(store ArticleStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		authed := uploadAuthed(r)
 		_, canUpload := store.(ArticleWriter)
 		w.Header().Set("Cache-Control", "no-store")
 		render(w, "upload.html", uploadData{
 			Title:     "Upload Article · Crypto Today",
+			Authed:    authed,
 			CanUpload: canUpload,
 			Form: uploadForm{
 				Category: "General",
@@ -45,13 +53,50 @@ func handleUploadGet(store ArticleStore) http.HandlerFunc {
 	}
 }
 
+func handleUploadLogin() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "bad request", http.StatusBadRequest)
+			return
+		}
+		if !checkUploadPassword(strings.TrimSpace(r.FormValue("password"))) {
+			next := uploadLoginNext(r.FormValue("next"))
+			w.Header().Set("Cache-Control", "no-store")
+			if next == "/upload/manage" {
+				render(w, "manage.html", manageData{
+					Title:      "Quản lý blog · Crypto Today",
+					Authed:     false,
+					LoginError: "Mật khẩu không đúng",
+					Next:       next,
+				})
+				return
+			}
+			render(w, "upload.html", uploadData{
+				Title:      "Upload Article · Crypto Today",
+				Authed:     false,
+				CanUpload:  true,
+				LoginError: "Mật khẩu không đúng",
+			})
+			return
+		}
+		setUploadAuth(w)
+		http.Redirect(w, r, uploadLoginNext(r.FormValue("next")), http.StatusSeeOther)
+	}
+}
+
 func handleUploadPost(store ArticleStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if !uploadAuthed(r) {
+			http.Redirect(w, r, "/upload", http.StatusSeeOther)
+			return
+		}
+
 		writer, canUpload := store.(ArticleWriter)
 		if !canUpload {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "upload.html", uploadData{
 				Title:     "Upload Article · Crypto Today",
+				Authed:    true,
 				CanUpload: false,
 				Error:     "Upload requires Firestore (default). JSON mode is read-only.",
 			})
@@ -79,6 +124,7 @@ func handleUploadPost(store ArticleStore) http.HandlerFunc {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "upload.html", uploadData{
 				Title:     "Upload Article · Crypto Today",
+				Authed:    true,
 				CanUpload: true,
 				Error:     err.Error(),
 				Form:      form,
@@ -91,6 +137,7 @@ func handleUploadPost(store ArticleStore) http.HandlerFunc {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "upload.html", uploadData{
 				Title:     "Upload Article · Crypto Today",
+				Authed:    true,
 				CanUpload: true,
 				Error:     err.Error(),
 				Form:      form,
@@ -159,7 +206,15 @@ func formToArticle(form uploadForm) Article {
 		Author:      author,
 		PublishedAt: publishedAt,
 		Tags:        parseTags(form.Tags),
+		Visible:     boolPtr(true),
 	}
+}
+
+func uploadLoginNext(next string) string {
+	if next == "/upload/manage" {
+		return next
+	}
+	return "/upload"
 }
 
 func parseTags(raw string) []string {

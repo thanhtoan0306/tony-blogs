@@ -22,7 +22,7 @@ type articleData struct {
 
 func handleIndex(store ArticleStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		articles := store.All()
+		articles := visibleArticles(store.All())
 		today := todayIsoDate()
 		feed := articlesForDate(articles, today)
 		mode := "today"

@@ -9,6 +9,8 @@ import (
 	"google.golang.org/api/iterator"
 )
 
+// firestoreStore implements ArticleWriter and ArticleManager.
+
 type firestoreStore struct {
 	client     *firestore.Client
 	collection string
@@ -96,9 +98,26 @@ func (s *firestoreStore) Create(ctx context.Context, a Article) error {
 	if a.Slug == "" {
 		a.Slug = id
 	}
+	if a.Visible == nil {
+		a.Visible = boolPtr(true)
+	}
 
 	if _, err := s.client.Collection(s.collection).Doc(id).Set(ctx, a); err != nil {
 		return fmt.Errorf("firestore write: %w", err)
+	}
+	return s.reload(ctx)
+}
+
+func (s *firestoreStore) SetVisible(ctx context.Context, slug string, visible bool) error {
+	a, ok := s.bySlug[slug]
+	if !ok {
+		return fmt.Errorf("article %q not found", slug)
+	}
+	_, err := s.client.Collection(s.collection).Doc(a.ID).Update(ctx, []firestore.Update{
+		{Path: "visible", Value: visible},
+	})
+	if err != nil {
+		return fmt.Errorf("firestore update: %w", err)
 	}
 	return s.reload(ctx)
 }

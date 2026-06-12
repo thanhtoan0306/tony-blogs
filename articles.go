@@ -21,7 +21,27 @@ type Article struct {
 	Author      string   `json:"author"`
 	PublishedAt string   `json:"publishedAt"`
 	Tags        []string `json:"tags"`
+	Visible     *bool    `json:"visible,omitempty"`
 }
+
+func (a Article) IsVisible() bool {
+	if a.Visible == nil {
+		return true
+	}
+	return *a.Visible
+}
+
+func visibleArticles(articles []Article) []Article {
+	out := make([]Article, 0, len(articles))
+	for _, a := range articles {
+		if a.IsVisible() {
+			out = append(out, a)
+		}
+	}
+	return out
+}
+
+func boolPtr(v bool) *bool { return &v }
 
 type articleStore struct {
 	Articles []Article `json:"articles"`

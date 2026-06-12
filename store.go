@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+// memoryStore implements ArticleManager for local JSON mode.
+
 // ArticleStore loads and serves articles from Firestore by default (JSON via DATA_SOURCE=json).
 type ArticleStore interface {
 	All() []Article
@@ -56,4 +58,20 @@ func (s *memoryStore) All() []Article { return s.articles }
 func (s *memoryStore) BySlug(slug string) (Article, bool) {
 	a, ok := s.bySlug[slug]
 	return a, ok
+}
+
+func (s *memoryStore) SetVisible(_ context.Context, slug string, visible bool) error {
+	a, ok := s.bySlug[slug]
+	if !ok {
+		return fmt.Errorf("article %q not found", slug)
+	}
+	a.Visible = boolPtr(visible)
+	for i := range s.articles {
+		if s.articles[i].Slug == slug {
+			s.articles[i] = a
+			break
+		}
+	}
+	s.bySlug[slug] = a
+	return nil
 }
