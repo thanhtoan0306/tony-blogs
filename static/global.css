@@ -10,6 +10,12 @@
 	--link: #5eb3ff;
 	--radius: 12px;
 	--max-width: 1200px;
+	--fs-xs: 0.8125rem;
+	--fs-sm: 0.9375rem;
+	--fs-md: 1.0625rem;
+	--fs-lg: 1.1875rem;
+	--fs-xl: 1.3125rem;
+	--fs-2xl: 1.5rem;
 }
 
 *,
@@ -25,9 +31,10 @@ html {
 		-apple-system,
 		BlinkMacSystemFont,
 		sans-serif;
+	font-size: 17px;
 	background: var(--bg);
 	color: var(--text);
-	line-height: 1.6;
+	line-height: 1.65;
 }
 
 body {
@@ -54,7 +61,7 @@ main {
 	display: inline-block;
 	padding: 0.2rem 0.55rem;
 	border-radius: 999px;
-	font-size: 0.75rem;
+	font-size: var(--fs-xs);
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
@@ -87,7 +94,7 @@ main {
 	align-items: center;
 	gap: 0.6rem;
 	color: var(--text);
-	font-size: 1.25rem;
+	font-size: var(--fs-xl);
 	font-weight: 700;
 	text-decoration: none;
 }
@@ -106,11 +113,11 @@ main {
 	background: var(--accent-soft);
 	color: var(--accent);
 	font-weight: 800;
-	font-size: 1.1rem;
+	font-size: var(--fs-lg);
 }
 
 .nav {
-	font-size: 0.875rem;
+	font-size: var(--fs-sm);
 }
 
 .site-footer {
@@ -124,7 +131,7 @@ main {
 
 .site-footer p {
 	margin: 0;
-	font-size: 0.875rem;
+	font-size: var(--fs-sm);
 }
 
 .hero {
@@ -133,13 +140,13 @@ main {
 
 .hero h1 {
 	margin: 0.75rem 0 0.35rem;
-	font-size: clamp(2rem, 5vw, 2.75rem);
+	font-size: clamp(2.25rem, 5vw, 3rem);
 	line-height: 1.1;
 }
 
 .lede {
 	margin: 0;
-	font-size: 1rem;
+	font-size: var(--fs-md);
 }
 
 .feed {
@@ -163,7 +170,7 @@ main {
 }
 
 .card-title {
-	--title-font: 1rem;
+	--title-font: 1.3rem;
 	--title-lh: 1.35;
 	--title-lines: 3;
 	--title-height: calc(var(--title-font) * var(--title-lh) * var(--title-lines));
@@ -222,7 +229,7 @@ main {
 
 .card-excerpt .summary {
 	margin: 0;
-	font-size: 0.95rem;
+	font-size: var(--fs-md);
 	line-height: 1.55;
 	color: var(--muted);
 }
@@ -233,7 +240,7 @@ main {
 	align-items: center;
 	gap: 0.4rem;
 	margin: 0.65rem 0 0;
-	font-size: 0.8rem;
+	font-size: var(--fs-sm);
 }
 
 @container (max-width: 300px) {
@@ -243,11 +250,11 @@ main {
 	}
 
 	.card-title {
-		--title-font: 0.95rem;
+		--title-font: 1.2rem;
 	}
 
 	.card-excerpt .summary {
-		font-size: 0.875rem;
+		font-size: var(--fs-sm);
 	}
 }
 
@@ -255,9 +262,11 @@ main {
 	font-weight: 600;
 }
 
-.article .back {
+.article .back,
+.prices-page .back,
+.upload .back {
 	margin: 0 0 1.5rem;
-	font-size: 0.9rem;
+	font-size: var(--fs-sm);
 }
 
 .article .meta {
@@ -270,7 +279,7 @@ main {
 
 .article h1 {
 	margin: 0 0 0.5rem;
-	font-size: clamp(1.75rem, 4vw, 2.5rem);
+	font-size: clamp(1.9rem, 4vw, 2.75rem);
 	line-height: 1.15;
 }
 
@@ -302,7 +311,7 @@ main {
 
 .article .byline {
 	margin: 0 0 1.5rem;
-	font-size: 0.9rem;
+	font-size: var(--fs-sm);
 }
 
 .article .summary {
@@ -311,13 +320,29 @@ main {
 	border-left: 3px solid var(--accent);
 	background: var(--surface);
 	border-radius: 0 var(--radius) var(--radius) 0;
-	font-size: 1.1rem;
+	font-size: var(--fs-lg);
 	color: var(--muted);
+}
+
+.article .body p,
+.article .body li {
+	font-size: var(--fs-md);
 }
 
 .article .body p {
 	margin: 0 0 1rem;
-	font-size: 1.05rem;
+}
+
+.article .body h2 {
+	margin: 1.75rem 0 0.75rem;
+	font-size: var(--fs-xl);
+	line-height: 1.25;
+}
+
+.article .body h3 {
+	margin: 1.25rem 0 0.5rem;
+	font-size: var(--fs-lg);
+	line-height: 1.3;
 }
 
 .article .body blockquote {
@@ -353,27 +378,24 @@ main {
 	padding: 0.25rem 0.6rem;
 	border: 1px solid var(--border);
 	border-radius: 999px;
-	font-size: 0.8rem;
+	font-size: var(--fs-xs);
 	color: var(--muted);
 }
 
 .empty {
 	text-align: center;
 	padding: 2rem;
+	font-size: var(--fs-md);
 }
 
 .nav a {
 	font-weight: 600;
 }
 
-.upload h1 {
+.upload h1,
+.manage h1 {
 	margin: 0 0 0.5rem;
-	font-size: clamp(1.75rem, 4vw, 2.25rem);
-}
-
-.upload .back {
-	margin: 0 0 1.5rem;
-	font-size: 0.9rem;
+	font-size: clamp(1.9rem, 4vw, 2.5rem);
 }
 
 .article-form {
@@ -389,7 +411,7 @@ main {
 .article-form label {
 	display: grid;
 	gap: 0.4rem;
-	font-size: 0.9rem;
+	font-size: var(--fs-sm);
 	font-weight: 600;
 }
 
@@ -420,7 +442,7 @@ main {
 	resize: vertical;
 	min-height: 6rem;
 	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-	font-size: 0.9rem;
+	font-size: var(--fs-sm);
 }
 
 .form-row {
@@ -456,11 +478,12 @@ main {
 	border-radius: 8px;
 	background: rgba(255, 90, 90, 0.12);
 	color: #ff8a8a;
+	font-size: var(--fs-sm);
 }
 
 .prices-page h1 {
 	margin: 0.75rem 0 0.35rem;
-	font-size: clamp(2rem, 5vw, 2.5rem);
+	font-size: clamp(2.25rem, 5vw, 2.85rem);
 }
 
 .price-grid {
@@ -488,12 +511,12 @@ main {
 
 .price-panel h2 {
 	margin: 0 0 0.35rem;
-	font-size: 1.25rem;
+	font-size: var(--fs-xl);
 }
 
 .panel-source {
 	margin: 0 0 1rem;
-	font-size: 0.875rem;
+	font-size: var(--fs-sm);
 }
 
 .price-hero {
@@ -510,20 +533,20 @@ main {
 .price-hero .label,
 .oil-item .muted {
 	display: block;
-	font-size: 0.8rem;
+	font-size: var(--fs-xs);
 	color: var(--muted);
 	margin-bottom: 0.25rem;
 }
 
 .price-hero .value,
 .oil-quote strong {
-	font-size: 1.5rem;
+	font-size: var(--fs-2xl);
 }
 
 .change {
 	display: inline-block;
 	margin-top: 0.35rem;
-	font-size: 0.875rem;
+	font-size: var(--fs-sm);
 	font-weight: 600;
 }
 
@@ -541,7 +564,7 @@ main {
 
 .unit {
 	margin: 0.75rem 0 0;
-	font-size: 0.8rem;
+	font-size: var(--fs-xs);
 }
 
 .oil-list {
@@ -564,7 +587,7 @@ main {
 .price-table {
 	width: 100%;
 	border-collapse: collapse;
-	font-size: 0.95rem;
+	font-size: var(--fs-md);
 }
 
 .price-table th,
@@ -581,7 +604,7 @@ main {
 }
 
 .price-table thead th {
-	font-size: 0.8rem;
+	font-size: var(--fs-xs);
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
 	color: var(--muted);
@@ -595,7 +618,7 @@ main {
 
 .fx-converter h3 {
 	margin: 0 0 0.85rem;
-	font-size: 1rem;
+	font-size: var(--fs-md);
 }
 
 .fx-row {
@@ -608,7 +631,7 @@ main {
 .fx-row label {
 	display: grid;
 	gap: 0.35rem;
-	font-size: 0.85rem;
+	font-size: var(--fs-sm);
 	font-weight: 600;
 }
 
@@ -645,7 +668,7 @@ main {
 
 .fx-summary {
 	margin: 0.75rem 0 0;
-	font-size: 0.875rem;
+	font-size: var(--fs-sm);
 }
 
 .upload-gate {
@@ -672,13 +695,13 @@ main {
 
 .upload-gate-card h2 {
 	margin: 0;
-	font-size: 1.25rem;
+	font-size: var(--fs-xl);
 }
 
 .upload-gate-card label {
 	display: grid;
 	gap: 0.4rem;
-	font-size: 0.9rem;
+	font-size: var(--fs-sm);
 	font-weight: 600;
 }
 
@@ -733,7 +756,7 @@ main {
 
 .manage-table .manage-slug {
 	display: block;
-	font-size: 0.8rem;
+	font-size: var(--fs-xs);
 	margin-top: 0.2rem;
 }
 
@@ -765,7 +788,7 @@ main {
 
 .api-docs h1 {
 	margin: 0.5rem 0 0.75rem;
-	font-size: clamp(1.5rem, 3vw, 2rem);
+	font-size: clamp(1.75rem, 3vw, 2.35rem);
 }
 
 .api-docs .lede {
@@ -783,7 +806,7 @@ main {
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
 	background: var(--surface);
-	font-size: 0.9rem;
+	font-size: var(--fs-sm);
 }
 
 .api-curl {
@@ -792,7 +815,7 @@ main {
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
 	background: #0a0e13;
-	font-size: 0.82rem;
+	font-size: var(--fs-sm);
 	line-height: 1.5;
 }
 
@@ -805,7 +828,7 @@ main {
 	width: 100%;
 	border-collapse: collapse;
 	margin: 1rem 0 2rem;
-	font-size: 0.92rem;
+	font-size: var(--fs-md);
 }
 
 .api-table th,
@@ -835,7 +858,7 @@ main {
 
 .api-docs h2 {
 	margin-top: 2.25rem;
-	font-size: 1.2rem;
+	font-size: var(--fs-lg);
 }
 
 .api-foot {
@@ -844,5 +867,5 @@ main {
 
 .view-count {
 	margin: 0.35rem 0 0;
-	font-size: 0.85rem;
+	font-size: var(--fs-sm);
 }
