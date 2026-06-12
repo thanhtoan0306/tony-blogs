@@ -18,6 +18,15 @@ func initTemplates() error {
 	funcs := template.FuncMap{
 		"formatPublishedAt": formatPublishedAt,
 		"formatFullDate":    formatFullDate,
+		"formatVND":         formatVND,
+		"formatVNDChange":   formatVNDChange,
+		"formatVNDPerLiter": formatVNDPerLiter,
+		"formatUSD":         formatUSD,
+		"formatUSDChange":   formatUSDChange,
+		"formatPriceTime":   formatPriceTime,
+		"formatNextUpdate":  formatNextUpdate,
+		"changeClass":       changeClass,
+		"changeClassFloat":  changeClassFloat,
 	}
 
 	var err error

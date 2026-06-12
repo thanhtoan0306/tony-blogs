@@ -13,6 +13,9 @@ func main() {
 	}
 
 	ctx := context.Background()
+	prices := newPriceBoard()
+	prices.Start(ctx)
+
 	store, source, err := newArticleStore(ctx)
 	if err != nil {
 		log.Fatal(err)
@@ -33,6 +36,8 @@ func main() {
 	mux.HandleFunc("GET /news/{slug}", handleArticle(store))
 	mux.HandleFunc("GET /upload", handleUploadGet(store))
 	mux.HandleFunc("POST /upload", handleUploadPost(store))
+	mux.HandleFunc("GET /prices", handlePricesPage(prices))
+	mux.HandleFunc("GET /api/prices", handlePricesAPI(prices))
 	mux.HandleFunc("GET /", handleIndex(store))
 
 	addr := listenAddr(port)

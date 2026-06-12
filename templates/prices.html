@@ -1,0 +1,123 @@
+{{define "prices.html"}}
+{{template "header" .}}
+<section class="prices-page">
+	<p class="back"><a href="/">← Về trang chủ</a></p>
+	<p class="badge">Cập nhật mỗi 1 giờ</p>
+	<h1>Giá Việt Nam</h1>
+	<p class="lede muted">Vàng SJC, tỷ giá USD, xăng dầu Petrolimex và dầu thô thế giới · lần cập nhật {{formatPriceTime .Board.UpdatedAt}} · tiếp theo {{formatNextUpdate .Board.NextUpdate}}</p>
+
+	{{if .Board.Errors}}
+	<div class="form-error" role="alert">
+		{{range .Board.Errors}}<p>{{.}}</p>{{end}}
+	</div>
+	{{end}}
+
+	<div class="price-grid">
+		<section class="price-panel">
+			<h2>Giá vàng</h2>
+			<p class="panel-source muted">{{.Board.Gold.Source}} · {{.Board.Gold.Name}}</p>
+			<div class="price-hero">
+				<div>
+					<span class="label">Mua vào</span>
+					<strong class="value">{{formatVND .Board.Gold.BuyVND}}</strong>
+					<span class="change {{changeClass .Board.Gold.ChangeBuy}}">{{formatVNDChange .Board.Gold.ChangeBuy}}</span>
+				</div>
+				<div>
+					<span class="label">Bán ra</span>
+					<strong class="value">{{formatVND .Board.Gold.SellVND}}</strong>
+					<span class="change {{changeClass .Board.Gold.ChangeSell}}">{{formatVNDChange .Board.Gold.ChangeSell}}</span>
+				</div>
+			</div>
+			<p class="unit muted">{{.Board.Gold.Unit}}</p>
+		</section>
+
+		<section class="price-panel">
+			<h2>Tỷ giá USD</h2>
+			<p class="panel-source muted">{{.Board.USD.Source}} · trung bình ngân hàng</p>
+			<div class="price-hero">
+				<div>
+					<span class="label">Mua vào</span>
+					<strong class="value">{{formatVND .Board.USD.BuyVND}}</strong>
+				</div>
+				<div>
+					<span class="label">Bán ra</span>
+					<strong class="value">{{formatVND .Board.USD.SellVND}}</strong>
+				</div>
+			</div>
+			<p class="unit muted">Trung bình: <strong>1 USD = {{formatVND .Board.USD.AvgVND}}</strong></p>
+
+			<div class="fx-converter" id="fx-converter" data-rate="{{.Board.USD.AvgVND}}">
+				<h3>Đổi tiền</h3>
+				<div class="fx-row">
+					<label>
+						<span id="fx-from-label">USD</span>
+						<input id="fx-from" type="number" min="0" step="any" value="100" />
+					</label>
+					<button type="button" class="fx-swap" id="fx-swap" title="Đổi chiều">⇄</button>
+					<label>
+						<span id="fx-to-label">VND</span>
+						<input id="fx-to" type="text" readonly />
+					</label>
+				</div>
+				<p id="fx-summary" class="fx-summary muted"></p>
+			</div>
+		</section>
+
+		<section class="price-panel">
+			<h2>Dầu thô thế giới</h2>
+			<p class="panel-source muted">Hợp đồng tương lai · USD/thùng</p>
+			{{if .Board.Oil}}
+			<div class="oil-list">
+				{{range .Board.Oil}}
+				<div class="oil-item">
+					<div>
+						<strong>{{.Name}}</strong>
+						<span class="muted">{{.Symbol}}</span>
+					</div>
+					<div class="oil-quote">
+						<strong>{{formatUSD .PriceUSD}}</strong>
+						<span class="change {{changeClassFloat .ChangeUSD}}">{{formatUSDChange .ChangeUSD}}</span>
+					</div>
+				</div>
+				{{end}}
+			</div>
+			<p class="unit muted">Nguồn: {{(index .Board.Oil 0).Source}}</p>
+			{{else}}
+			<p class="empty muted">Chưa có dữ liệu dầu thô.</p>
+			{{end}}
+		</section>
+	</div>
+
+	<section class="price-panel wide">
+		<h2>Giá xăng dầu Việt Nam</h2>
+		<p class="panel-source muted">Petrolimex bán lẻ · Vùng I / Vùng II (₫/lít)</p>
+		{{if .Board.Gasoline}}
+		<div class="table-wrap">
+			<table class="price-table">
+				<thead>
+					<tr>
+						<th>Mặt hàng</th>
+						<th>Vùng I</th>
+						<th>Vùng II</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{range .Board.Gasoline}}
+					<tr>
+						<td>{{.Name}}</td>
+						<td>{{formatVNDPerLiter .Region1}}</td>
+						<td>{{formatVNDPerLiter .Region2}}</td>
+					</tr>
+					{{end}}
+				</tbody>
+			</table>
+		</div>
+		<p class="unit muted">Nguồn: {{(index .Board.Gasoline 0).Source}}</p>
+		{{else}}
+		<p class="empty muted">Chưa có dữ liệu xăng dầu.</p>
+		{{end}}
+	</section>
+</section>
+<script src="/static/prices-converter.js"></script>
+{{template "footer" .}}
+{{end}}
