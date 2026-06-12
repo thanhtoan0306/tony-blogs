@@ -9,7 +9,8 @@
       "category": "Bitcoin",
       "author": "Crypto Desk",
       "publishedAt": "2026-06-11T08:15:00Z",
-      "tags": ["bitcoin", "etf", "markets"]
+      "tags": ["bitcoin", "etf", "markets"],
+      "thumbnail": "https://images.unsplash.com/photo-1518546305921-5a4ffdbb5feb?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "id": "ethereum-pectra-mainnet-live",
@@ -20,7 +21,8 @@
       "category": "Ethereum",
       "author": "Layer-1 Team",
       "publishedAt": "2026-06-11T11:42:00Z",
-      "tags": ["ethereum", "pectra", "upgrade"]
+      "tags": ["ethereum", "pectra", "upgrade"],
+      "thumbnail": "https://images.unsplash.com/photo-1639765487014-cfd9c42ad98d?auto=format&fit=crop&w=1200&q=80"
     },
     {
       "id": "hyperliquid-perp-volume-record-june-2026",
@@ -31,7 +33,8 @@
       "category": "DeFi",
       "author": "Derivatives Desk",
       "publishedAt": "2026-06-11T16:30:00Z",
-      "tags": ["hyperliquid", "perps", "hype", "defi"]
+      "tags": ["hyperliquid", "perps", "hype", "defi"],
+      "thumbnail": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80"
     }
   ]
 }

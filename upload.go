@@ -21,6 +21,7 @@ type uploadForm struct {
 	Slug        string
 	Summary     string
 	BodyHTML    string
+	Thumbnail   string
 	Category    string
 	Author      string
 	PublishedAt string
@@ -42,7 +43,7 @@ func handleUploadGet(store ArticleStore) http.HandlerFunc {
 		_, canUpload := store.(ArticleWriter)
 		w.Header().Set("Cache-Control", "no-store")
 		render(w, "upload.html", uploadData{
-			Title:     "Upload Article · Crypto Today",
+			Title:     "Upload Article · Tony Blogs",
 			Authed:    authed,
 			CanUpload: canUpload,
 			Form: uploadForm{
@@ -64,7 +65,7 @@ func handleUploadLogin() http.HandlerFunc {
 			w.Header().Set("Cache-Control", "no-store")
 			if next == "/upload/manage" {
 				render(w, "manage.html", manageData{
-					Title:      "Quản lý blog · Crypto Today",
+					Title:      "Quản lý blog · Tony Blogs",
 					Authed:     false,
 					LoginError: "Mật khẩu không đúng",
 					Next:       next,
@@ -72,7 +73,7 @@ func handleUploadLogin() http.HandlerFunc {
 				return
 			}
 			render(w, "upload.html", uploadData{
-				Title:      "Upload Article · Crypto Today",
+				Title:      "Upload Article · Tony Blogs",
 				Authed:     false,
 				CanUpload:  true,
 				LoginError: "Mật khẩu không đúng",
@@ -95,7 +96,7 @@ func handleUploadPost(store ArticleStore) http.HandlerFunc {
 		if !canUpload {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "upload.html", uploadData{
-				Title:     "Upload Article · Crypto Today",
+				Title:     "Upload Article · Tony Blogs",
 				Authed:    true,
 				CanUpload: false,
 				Error:     "Upload requires Firestore (default). JSON mode is read-only.",
@@ -114,6 +115,7 @@ func handleUploadPost(store ArticleStore) http.HandlerFunc {
 			Slug:        strings.TrimSpace(r.FormValue("slug")),
 			Summary:     strings.TrimSpace(r.FormValue("summary")),
 			BodyHTML:    strings.TrimSpace(r.FormValue("bodyHtml")),
+			Thumbnail:   strings.TrimSpace(r.FormValue("thumbnail")),
 			Category:    strings.TrimSpace(r.FormValue("category")),
 			Author:      strings.TrimSpace(r.FormValue("author")),
 			PublishedAt: strings.TrimSpace(r.FormValue("publishedAt")),
@@ -123,7 +125,7 @@ func handleUploadPost(store ArticleStore) http.HandlerFunc {
 		if err := validateUploadForm(form, store); err != nil {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "upload.html", uploadData{
-				Title:     "Upload Article · Crypto Today",
+				Title:     "Upload Article · Tony Blogs",
 				Authed:    true,
 				CanUpload: true,
 				Error:     err.Error(),
@@ -136,7 +138,7 @@ func handleUploadPost(store ArticleStore) http.HandlerFunc {
 		if err := writer.Create(r.Context(), article); err != nil {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "upload.html", uploadData{
-				Title:     "Upload Article · Crypto Today",
+				Title:     "Upload Article · Tony Blogs",
 				Authed:    true,
 				CanUpload: true,
 				Error:     err.Error(),
@@ -202,6 +204,7 @@ func formToArticle(form uploadForm) Article {
 		Title:       form.Title,
 		Summary:     form.Summary,
 		BodyHTML:    form.BodyHTML,
+		Thumbnail:   form.Thumbnail,
 		Category:    category,
 		Author:      author,
 		PublishedAt: publishedAt,

@@ -21,7 +21,21 @@ type Article struct {
 	Author      string   `json:"author"`
 	PublishedAt string   `json:"publishedAt"`
 	Tags        []string `json:"tags"`
+	Thumbnail   string   `json:"thumbnail,omitempty"`
 	Visible     *bool    `json:"visible,omitempty"`
+}
+
+const defaultThumbnail = "/static/default-fallback-image.png"
+
+func (a Article) HasThumbnail() bool {
+	return strings.TrimSpace(a.Thumbnail) != ""
+}
+
+func (a Article) ThumbnailSrc() string {
+	if a.HasThumbnail() {
+		return a.Thumbnail
+	}
+	return defaultThumbnail
 }
 
 func (a Article) IsVisible() bool {

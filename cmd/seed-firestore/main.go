@@ -23,6 +23,7 @@ type article struct {
 	Author      string   `json:"author"`
 	PublishedAt string   `json:"publishedAt"`
 	Tags        []string `json:"tags"`
+	Thumbnail   string   `json:"thumbnail,omitempty"`
 }
 
 type articleFile struct {

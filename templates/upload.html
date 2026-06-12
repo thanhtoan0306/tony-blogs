@@ -52,6 +52,11 @@
 		</label>
 
 		<label>
+			<span>Thumbnail URL <span class="muted">(public image link)</span></span>
+			<input type="url" name="thumbnail" value="{{.Form.Thumbnail}}" maxlength="500" placeholder="https://images.unsplash.com/photo-..." />
+		</label>
+
+		<label>
 			<span>Body HTML <em>*</em></span>
 			<textarea name="bodyHtml" rows="12" required placeholder="<p>First paragraph...</p>">{{.Form.BodyHTML}}</textarea>
 		</label>

@@ -15,7 +15,7 @@ func handlePricesPage(board *priceBoard) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "public, max-age=300")
 		render(w, "prices.html", pricesPageData{
-			Title:  "Giá Việt Nam · Crypto Today",
+			Title:  "Giá Việt Nam · Tony Blogs",
 			Board:  board.Snapshot(r.Context()),
 			PollMs: int(pricePollInterval.Milliseconds()),
 		})

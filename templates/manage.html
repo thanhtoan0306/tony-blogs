@@ -36,6 +36,7 @@
 		<table class="price-table manage-table">
 			<thead>
 				<tr>
+					<th></th>
 					<th>Tiêu đề</th>
 					<th>Ngày đăng</th>
 					<th>Trang chính</th>
@@ -45,6 +46,9 @@
 			<tbody>
 				{{range .Articles}}
 				<tr>
+					<td class="manage-thumb-cell">
+						<img class="manage-thumb" src="{{.ThumbnailSrc}}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/static/default-fallback-image.png';" />
+					</td>
 					<td>
 						<strong>{{.Title}}</strong>
 						<span class="muted manage-slug">/news/{{.Slug}}</span>

@@ -21,7 +21,7 @@ func handleManageGet(store ArticleStore) http.HandlerFunc {
 		_, canManage := store.(ArticleManager)
 		w.Header().Set("Cache-Control", "no-store")
 		render(w, "manage.html", manageData{
-			Title:     "Quản lý blog · Crypto Today",
+			Title:     "Quản lý blog · Tony Blogs",
 			Authed:    authed,
 			CanManage: canManage,
 			Articles:  store.All(),
@@ -41,7 +41,7 @@ func handleManageVisible(store ArticleStore) http.HandlerFunc {
 		if !canManage {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "manage.html", manageData{
-				Title:     "Quản lý blog · Crypto Today",
+				Title:     "Quản lý blog · Tony Blogs",
 				Authed:    true,
 				CanManage: false,
 				Articles:  store.All(),
@@ -66,7 +66,7 @@ func handleManageVisible(store ArticleStore) http.HandlerFunc {
 		if err := manager.SetVisible(r.Context(), slug, visible); err != nil {
 			w.Header().Set("Cache-Control", "no-store")
 			render(w, "manage.html", manageData{
-				Title:     "Quản lý blog · Crypto Today",
+				Title:     "Quản lý blog · Tony Blogs",
 				Authed:    true,
 				CanManage: true,
 				Articles:  store.All(),

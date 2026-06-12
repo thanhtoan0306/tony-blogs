@@ -12,6 +12,10 @@
 		<p class="byline muted">By {{.Article.Author}}</p>
 	</header>
 
+	<figure class="article-thumb">
+		<img src="{{.Article.ThumbnailSrc}}" alt="{{.Article.Title}}" loading="lazy" onerror="this.onerror=null;this.src='/static/default-fallback-image.png';" />
+	</figure>
+
 	<p class="summary">{{.Article.Summary}}</p>
 
 	<div class="body">{{.Article.BodyContent}}</div>

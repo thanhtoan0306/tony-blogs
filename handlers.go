@@ -38,7 +38,7 @@ func handleIndex(store ArticleStore) http.HandlerFunc {
 
 		w.Header().Set("Cache-Control", "public, max-age=60")
 		render(w, "index.html", indexData{
-			Title:    "Crypto Today — Top Stories",
+			Title:    "Tony Blogs — Top Stories",
 			Headline: headline,
 			Lede:     lede,
 			Articles: feed,
@@ -64,7 +64,7 @@ func handleArticle(store ArticleStore) http.HandlerFunc {
 
 		w.Header().Set("Cache-Control", "public, max-age=300")
 		render(w, "article.html", articleData{
-			Title:   article.Title + " · Crypto Today",
+			Title:   article.Title + " · Tony Blogs",
 			Article: article,
 		})
 	}

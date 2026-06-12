@@ -10,15 +10,19 @@
 	{{if .Articles}}
 		{{range .Articles}}
 		<article class="card">
-			<div class="meta">
-				<span class="badge">{{.Category}}</span>
-				<time class="muted" datetime="{{.PublishedAt}}">{{formatPublishedAt .PublishedAt}}</time>
-			</div>
-			<h2><a href="/news/{{.Slug}}">{{.Title}}</a></h2>
-			<p class="summary">{{.Summary}}</p>
-			<div class="footer">
-				<span class="muted">By {{.Author}}</span>
-				<a class="read-more" href="/news/{{.Slug}}">Read article →</a>
+			<h2 class="card-title"><a href="/news/{{.Slug}}">{{.Title}}</a></h2>
+			<div class="card-row">
+				<a class="card-thumb" href="/news/{{.Slug}}">
+					<img src="{{.ThumbnailSrc}}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/static/default-fallback-image.png';" />
+				</a>
+				<div class="card-excerpt">
+					<p class="summary">{{.Summary}}</p>
+					<p class="card-meta muted">
+						<span>{{.Category}}</span>
+						<span aria-hidden="true">·</span>
+						<time datetime="{{.PublishedAt}}">{{formatPublishedAt .PublishedAt}}</time>
+					</p>
+				</div>
 			</div>
 		</article>
 		{{end}}
