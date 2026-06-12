@@ -26,6 +26,62 @@
 		<li>#{{.}}</li>
 		{{end}}
 	</ul>
+
+	<section class="comments" id="comments" aria-label="Bình luận">
+		<header class="comments-header">
+			<div>
+				<p class="badge">Bình luận</p>
+				<h2>Ý kiến độc giả</h2>
+				<p class="comments-lede muted">Ẩn danh · tự đặt nickname · không cần đăng ký</p>
+			</div>
+			{{if .Comments}}<span class="comment-count">{{len .Comments}}</span>{{end}}
+		</header>
+
+		{{if .Comments}}
+		<ol class="comment-list">
+			{{range .Comments}}
+			<li class="comment-item">
+				<span class="comment-avatar" aria-hidden="true">{{initial .Nickname}}</span>
+				<div class="comment-main">
+					<div class="comment-head">
+						<strong class="comment-author">{{.Nickname}}</strong>
+						<time class="muted" datetime="{{.CreatedAt}}">{{formatPublishedAt .CreatedAt}}</time>
+					</div>
+					<p class="comment-body">{{.Body}}</p>
+				</div>
+			</li>
+			{{end}}
+		</ol>
+		{{else}}
+		<div class="comment-empty">
+			<p>Chưa có bình luận.</p>
+			<p class="muted">Hãy là người đầu tiên chia sẻ ý kiến.</p>
+		</div>
+		{{end}}
+
+		<div class="comment-compose">
+			<h3>Viết bình luận</h3>
+			<form class="comment-form" method="post" action="/news/{{.Article.Slug}}/comments">
+				{{if .CommentError}}
+				<p class="form-error" role="alert">{{.CommentError}}</p>
+				{{end}}
+				<div class="comment-fields">
+					<label class="comment-field comment-field-nick">
+						<span>Nickname</span>
+						<input type="text" name="nickname" maxlength="30" placeholder="độc giả_01" value="{{.CommentForm.Nickname}}" autocomplete="nickname" required />
+					</label>
+					<label class="comment-field comment-field-body">
+						<span>Nội dung</span>
+						<textarea name="body" rows="5" maxlength="1000" placeholder="Chia sẻ suy nghĩ của bạn về bài viết..." required>{{.CommentForm.Body}}</textarea>
+					</label>
+				</div>
+				<div class="comment-actions">
+					<button type="submit" class="btn-comment">Gửi bình luận</button>
+					<p class="comment-hint muted">Tối đa 1000 ký tự · nội dung công khai</p>
+				</div>
+			</form>
+		</div>
+	</section>
 </article>
 {{template "footer" .}}
 {{end}}

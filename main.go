@@ -34,6 +34,15 @@ func main() {
 	}
 	log.Printf("page views: %s", viewSource)
 
+	comments, commentSource, err := newCommentStore(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if closer, ok := comments.(*firestoreCommentStore); ok {
+		defer closer.Close()
+	}
+	log.Printf("comments: %s", commentSource)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8093"
@@ -42,7 +51,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /static/", handleStatic)
 	mux.HandleFunc("GET /health", handleHealth(source, len(store.All())))
-	mux.HandleFunc("GET /news/{slug}", handleArticle(store, views))
+	mux.HandleFunc("GET /news/{slug}", handleArticle(store, views, comments))
+	mux.HandleFunc("POST /news/{slug}/comments", handleCommentPost(store, comments))
 	mux.HandleFunc("GET /upload", handleUploadGet(store))
 	mux.HandleFunc("POST /upload/login", handleUploadLogin())
 	mux.HandleFunc("POST /upload", handleUploadPost(store))

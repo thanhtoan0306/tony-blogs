@@ -28,6 +28,7 @@ func initTemplates() error {
 		"changeClass":       changeClass,
 		"changeClassFloat":  changeClassFloat,
 		"formatIntDots":     formatIntDots,
+		"initial":           commentInitial,
 	}
 
 	var err error

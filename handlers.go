@@ -17,9 +17,12 @@ type indexData struct {
 }
 
 type articleData struct {
-	Title      string
-	Article    Article
-	DailyViews int64
+	Title        string
+	Article      Article
+	DailyViews   int64
+	Comments     []Comment
+	CommentError string
+	CommentForm  commentForm
 }
 
 func handleIndex(store ArticleStore, views ViewCounter) http.HandlerFunc {
@@ -38,7 +41,7 @@ func handleIndex(store ArticleStore, views ViewCounter) http.HandlerFunc {
 	}
 }
 
-func handleArticle(store ArticleStore, views ViewCounter) http.HandlerFunc {
+func handleArticle(store ArticleStore, views ViewCounter, comments CommentStore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		slug := strings.TrimPrefix(r.URL.Path, "/news/")
 		if slug == "" || strings.Contains(slug, "/") {
@@ -58,6 +61,7 @@ func handleArticle(store ArticleStore, views ViewCounter) http.HandlerFunc {
 			Title:      article.Title + " · Tony Blogs",
 			Article:    article,
 			DailyViews: recordPageView(r.Context(), views, "news:"+slug),
+			Comments:   loadArticleComments(r.Context(), comments, slug),
 		})
 	}
 }
